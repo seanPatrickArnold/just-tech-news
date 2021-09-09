@@ -3,13 +3,12 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const seedAll = require('./seeds/index.js');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 const sequelize = require('./config/connection');
-
-const hbs = exphbs.create({});
 
 const sess = {
   secret: 'Super secret secret',
@@ -20,6 +19,8 @@ const sess = {
     db: sequelize
   })
 };
+
+const hbs = exphbs.create({});
 
 app.use(session(sess));
 
@@ -35,3 +36,5 @@ app.use(require('./controllers/'));
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
 });
+
+// seedAll();
